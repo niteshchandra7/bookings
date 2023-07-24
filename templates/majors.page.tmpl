@@ -1,0 +1,67 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="/static/images/marjors-suite.png" class="img-fluid img-thumbnail mx-auto d-block room-image"
+                alt="general's room">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center mt-4">Major's Suite</h1>
+            <p class="text-center">Your home away from home set on majestic wave of the Indian Ocean, this will be
+                vacation to remember
+                Your home away from home set on majestic wave of the Indian Ocean, this will be vacation to remember
+                Your home away from home set on majestic wave of the Indian Ocean, this will be vacation to remember
+                Your home away from home set on majestic wave of the Indian Ocean, this will be vacation to remember
+                Your home away from home set on majestic wave of the Indian Ocean, this will be vacation to remember
+                Your home away from home set on majestic wave of the Indian Ocean, this will be vacation to remember
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <a id="check-availability-button" href="#!" class="btn btn-success">Check Availability</a>
+        </div>
+    </div>
+</div>
+
+{{end}}
+
+{{define "js"}}
+
+<script>
+    let attention = Prompt();
+    const button = document.querySelector("#check-availability-button");
+    button.addEventListener("click", function (event) {
+        let html = `
+                <form id="check-availability-form action="" method="post" novalidate
+                class = "needs-validation">
+                    <div class = "form-row">
+                        <div class="col">
+                            <div class="form-row" id="reservation-dates-modal">
+                                <div class="col">
+                                    <input disabled required class = "form-control" type="text" name="start" id="start" placeholder="Arrival">
+                                </div>
+                                <div class="col">
+                                    <input disabled required class = "form-control" type="text" name="end" id="end" placeholder="Departure">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                `;
+        //notify("You clicked me!", "error");
+        //button.classList.toggle("red");
+        //notifyModal("title", "<em>hello World</em>", "success", "My text")
+        //attention.toast({ msg: "Hello,world!" });
+        //attention.success({ msg: "Hello,Wold!" });
+        //attention.error({ msg: "error!" });
+        attention.custom({ msg: html, title: "choose your dates" });
+    });
+</script>
+
+{{end}}

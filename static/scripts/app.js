@@ -8,45 +8,6 @@ function notify(msg, msgType) {
   });
 }
 
-const p = document.querySelector("#paragraph");
-p.textContent += "This is being added from JS";
-p.classList.add("red");
-
-const button = document.querySelector("#colorButton");
-
-let attention = Prompt();
-button.addEventListener("click", function (event) {
-  let html = `
-    <form id="check-availability-form action="" method="post" novalidate
-    class = "needs-validation">
-        <div class = "form-row">
-            <div class="col">
-                <div class="form-row" id="reservation-dates-modal">
-                    <div class="col">
-                        <input disabled required class = "form-control" type="text" name="start" id="start" placeholder="Arrival">
-                    </div>
-                    <div class="col">
-                        <input disabled required class = "form-control" type="text" name="end" id="end" placeholder="Departure">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-    `;
-  //notify("You clicked me!", "error");
-  //button.classList.toggle("red");
-  //notifyModal("title", "<em>hello World</em>", "success", "My text")
-  //attention.toast({ msg: "Hello,world!" });
-  //attention.success({ msg: "Hello,Wold!" });
-  //attention.error({ msg: "error!" });
-  attention.custom({ msg: html, title: "choose your dates" });
-});
-
-const elem = document.getElementById("reservation-date");
-const rangepicker = new DateRangePicker(elem, {
-  format: "yyyy-mm-dd",
-});
-
 (function () {
   "use strict";
   window.addEventListener(
