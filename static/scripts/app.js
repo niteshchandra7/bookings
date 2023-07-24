@@ -84,7 +84,7 @@ function Prompt() {
   async function custom(c) {
     const { msg = "", title = "" } = c;
 
-    const { value: formValues } = await Swal.fire({
+    const { value: result } = await Swal.fire({
       title,
       html: msg,
       focusConfirm: false,
@@ -109,8 +109,18 @@ function Prompt() {
       },
     });
 
-    if (formValues) {
-      Swal.fire(JSON.stringify(formValues));
+    if (result) {
+      if (result.dismiss !== Swal.DismissReason.cancel) {
+        if (result.value !== "") {
+          if (c.callback !== undefined) {
+            c.callback(result);
+          } else {
+            c.callback(false);
+          }
+        } else {
+          c.callback(false);
+        }
+      }
     }
   }
   return {
