@@ -1,13 +1,15 @@
 package render
 
 import (
-	"github.com/niteshchandra7/bookings/pkg/config"
-	"github.com/niteshchandra7/bookings/pkg/models"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/justinas/nosurf"
+	"github.com/niteshchandra7/bookings/pkg/config"
+	"github.com/niteshchandra7/bookings/pkg/models"
 )
 
 var tc = make(map[string]*template.Template)
@@ -17,11 +19,12 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
-func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 	var err error
 	if app.UseCache {
@@ -38,7 +41,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 		log.Fatal("could not get template from template cache")
 		os.Exit(1)
 	}
-	td = AddDefaultData(td)
+	td = AddDefaultData(td, r)
 	err = tc[tmpl].Execute(w, td)
 	if err != nil {
 		log.Fatal(err)
