@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/niteshchandra7/bookings/pkg/config"
-	"github.com/niteshchandra7/bookings/pkg/handlers"
-	"github.com/niteshchandra7/bookings/pkg/render"
+	"github.com/niteshchandra7/bookings/internals/config"
+	"github.com/niteshchandra7/bookings/internals/handlers"
+	"github.com/niteshchandra7/bookings/internals/render"
 	"log"
 	"net/http"
 	"os"

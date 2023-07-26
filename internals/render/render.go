@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 
 	"github.com/justinas/nosurf"
-	"github.com/niteshchandra7/bookings/pkg/config"
-	"github.com/niteshchandra7/bookings/pkg/models"
+	"github.com/niteshchandra7/bookings/internals/config"
+	"github.com/niteshchandra7/bookings/internals/models"
 )
 
 var tc = make(map[string]*template.Template)

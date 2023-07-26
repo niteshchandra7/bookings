@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/niteshchandra7/bookings/pkg/config"
-	"github.com/niteshchandra7/bookings/pkg/models"
-	"github.com/niteshchandra7/bookings/pkg/render"
+	"github.com/niteshchandra7/bookings/internals/config"
+	"github.com/niteshchandra7/bookings/internals/models"
+	"github.com/niteshchandra7/bookings/internals/render"
 )
 
 // Repo is the repository used by the handlers
@@ -83,6 +83,7 @@ type jsonResponse struct {
 }
 
 func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	log.Println("niteshc")
 	resp := jsonResponse{
 		OK:      true,
 		Message: "available!",

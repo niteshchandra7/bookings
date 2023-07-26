@@ -3,11 +3,12 @@ package main
 import (
 	"net/http"
 
-	"github.com/niteshchandra7/bookings/pkg/config"
-	"github.com/niteshchandra7/bookings/pkg/handlers"
-
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/niteshchandra7/bookings/internals/config"
+	"github.com/niteshchandra7/bookings/internals/handlers"
+	//"github.com/go-chi/chi/"
+	//"github.com/go-chi/chi/middleware"
 	//"github.com/bmizerany/pat"
 )
 
@@ -29,6 +30,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/search-availability", http.HandlerFunc(handlers.Repo.Availability))
 	mux.Post("/search-availability", http.HandlerFunc(handlers.Repo.PostAvailability))
 	mux.Get("/search-availability-json", http.HandlerFunc(handlers.Repo.AvailabilityJSON))
+	mux.Post("/search-availability-json", http.HandlerFunc(handlers.Repo.AvailabilityJSON))
 
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
