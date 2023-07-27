@@ -8,6 +8,17 @@ function notify(msg, msgType) {
   });
 }
 
+function notifyModal(title, html, icon, confirmButtonText) {
+  Swal.fire({
+    title,
+    html,
+    icon,
+    confirmButtonText,
+  });
+}
+
+
+
 (function () {
   "use strict";
   window.addEventListener(
@@ -34,14 +45,9 @@ function notify(msg, msgType) {
   );
 })();
 
-function notifyModal(title, html, icon, confirmButtonText) {
-  Swal.fire({
-    title,
-    html,
-    icon,
-    confirmButtonText,
-  });
-}
+
+
+
 
 function Prompt() {
   let toast = function (c) {
