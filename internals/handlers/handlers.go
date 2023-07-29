@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/niteshchandra7/bookings/internals/config"
 	"github.com/niteshchandra7/bookings/internals/forms"
+	"github.com/niteshchandra7/bookings/internals/helpers"
 	"github.com/niteshchandra7/bookings/internals/models"
 	"github.com/niteshchandra7/bookings/internals/render"
 )
@@ -43,12 +43,12 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
 // About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	stringMap := make(map[string]string)
+	/*stringMap := make(map[string]string)
 	stringMap["test"] = "Hello, Again!"
 	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remoteIP
+	stringMap["remote_ip"] = remoteIP*/
 	render.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
+		//StringMap: stringMap,
 	})
 }
 
@@ -68,7 +68,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		log.Panicln(err)
+		helpers.ServerError(w, err)
 		return
 	}
 	reservation := models.Reservation{
@@ -131,8 +131,8 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 
 	out, err := json.MarshalIndent(resp, "", "     ")
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
+		helpers.ServerError(w, err)
+		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
@@ -141,6 +141,7 @@ func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
+		m.App.ErrorLog.Println("Cant get error from session")
 		log.Println("cannot get item from session")
 		e := string("Cannot get reservation from session")
 		m.App.Session.Put(r.Context(), "error", e)

@@ -1,0 +1,19 @@
+mode: set
+github.com/niteshchandra7/bookings/internals/forms/errors.go:6.44,8.2 1 1
+github.com/niteshchandra7/bookings/internals/forms/errors.go:11.42,13.18 2 0
+github.com/niteshchandra7/bookings/internals/forms/errors.go:13.18,15.3 1 0
+github.com/niteshchandra7/bookings/internals/forms/errors.go:16.2,16.14 1 0
+github.com/niteshchandra7/bookings/internals/forms/forms.go:17.33,22.2 1 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:25.43,26.31 1 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:26.31,28.37 2 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:28.37,30.4 1 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:34.56,36.13 2 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:36.13,39.3 2 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:40.2,40.13 1 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:44.29,46.2 1 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:49.74,51.21 2 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:51.21,54.3 2 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:55.2,55.13 1 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:59.43,60.40 1 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:60.40,63.3 2 1
+github.com/niteshchandra7/bookings/internals/forms/forms.go:64.2,64.13 1 1
