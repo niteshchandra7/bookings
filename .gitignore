@@ -1,1 +1,5 @@
 .idea
+database.yml
+run.sh
+bookings
+.DS_Store
