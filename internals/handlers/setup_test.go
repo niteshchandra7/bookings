@@ -15,6 +15,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/justinas/nosurf"
 	"github.com/niteshchandra7/bookings/internals/config"
+	"github.com/niteshchandra7/bookings/internals/drivers"
 	"github.com/niteshchandra7/bookings/internals/models"
 	"github.com/niteshchandra7/bookings/internals/render"
 )
@@ -44,6 +45,13 @@ func getRoutes() http.Handler {
 
 	app.Session = session
 
+	log.Println("Connecting to database...")
+
+	db, err := drivers.ConnectSQL("host=localhost port=5432 dbname=bookings user=niteshchandra password=")
+	if err != nil {
+		log.Fatal("cannot connect to db, dying...")
+	}
+
 	tc, err := CreateTestTemplate()
 
 	if err != nil {
@@ -51,9 +59,9 @@ func getRoutes() http.Handler {
 	}
 	app.TemplateCache = tc
 	app.UseCache = true
-	repo := NewRepo(&app)
+	repo := NewRepo(&app, db)
 	NewHandlers(repo)
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
