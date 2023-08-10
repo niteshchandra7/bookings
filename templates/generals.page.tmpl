@@ -72,7 +72,7 @@ let attention = Prompt();
       let form = document.getElementById("check-availability-form");
       //console.dir(form)
       let formData = new FormData(form);
-      console.log(String({{.CSRFToken}}));
+      //console.log(String({{.CSRFToken}}));
       formData.append("csrf_token", "{{.CSRFToken}}");
       formData.append("room_id","1");
       //console.dir(formData);
@@ -82,9 +82,21 @@ let attention = Prompt();
       }).then((response) => response.json())
         .then((data) => {
           if(data.ok) {
-            console.log("room available")
+            attention.custom({
+                showConfirmButton:false,
+                icon: "success",
+                msg: `<p>Room is available!</p>
+                    <p> 
+                        <a href="/book-room?id=${data.room_id}&s=${data.start_date}&e=${data.end_date}" 
+                        class="btn btn-primary"> Book now!</a> 
+                    </p>
+                `
+            })
           } else {
-            console.log("room is not available")
+            attention.error({
+                msg: "No Availability",
+            }
+            )
           }
         });
     },

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"testing"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
@@ -15,7 +16,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/justinas/nosurf"
 	"github.com/niteshchandra7/bookings/internals/config"
-	"github.com/niteshchandra7/bookings/internals/drivers"
 	"github.com/niteshchandra7/bookings/internals/models"
 	"github.com/niteshchandra7/bookings/internals/render"
 )
@@ -26,7 +26,8 @@ var tc = make(map[string]*template.Template)
 var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
 
-func getRoutes() http.Handler {
+func TestMain(m *testing.M) {
+
 	app.InProduction = false
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -45,12 +46,12 @@ func getRoutes() http.Handler {
 
 	app.Session = session
 
-	log.Println("Connecting to database...")
+	// log.Println("Connecting to database...")
 
-	db, err := drivers.ConnectSQL("host=localhost port=5432 dbname=bookings user=niteshchandra password=")
-	if err != nil {
-		log.Fatal("cannot connect to db, dying...")
-	}
+	// db, err := drivers.ConnectSQL("host=localhost port=5432 dbname=bookings user=niteshchandra password=")
+	// if err != nil {
+	// 	log.Fatal("cannot connect to db, dying...")
+	// }
 
 	tc, err := CreateTestTemplate()
 
@@ -59,9 +60,14 @@ func getRoutes() http.Handler {
 	}
 	app.TemplateCache = tc
 	app.UseCache = true
-	repo := NewRepo(&app, db)
+	repo := NewTestRepo(&app)
 	NewHandlers(repo)
 	render.NewRenderer(&app)
+	os.Exit(m.Run())
+
+}
+
+func getRoutes() http.Handler {
 
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)

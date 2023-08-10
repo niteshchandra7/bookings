@@ -18,7 +18,7 @@ func routes(app *config.AppConfig) http.Handler {
 	// mux.Get("/about", http.HandlerFunc(handlers.Repo.About))
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
-	mux.Use(NoSurf)
+	//mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 	//mux.Use(WriteToConsole)
 	mux.Get("/", http.HandlerFunc(handlers.Repo.Home))
@@ -41,6 +41,8 @@ func routes(app *config.AppConfig) http.Handler {
 
 	mux.Get("/search-availability-json", http.HandlerFunc(handlers.Repo.AvailabilityJSON))
 	mux.Post("/search-availability-json", http.HandlerFunc(handlers.Repo.AvailabilityJSON))
+
+	mux.Get("/book-room", handlers.Repo.BookRoom)
 
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))

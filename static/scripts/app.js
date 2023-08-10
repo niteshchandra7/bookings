@@ -1,26 +1,5 @@
-function notify(msg, msgType) {
-  notie.alert({
-    type: msgType, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
-    text: msg,
-    stay: false, // optional, default = false
-    time: 3, // optional, default = 3, minimum = 1,
-    position: "top", // optional, default = 'top', enum: ['top', 'bottom']
-  });
-}
-
-function notifyModal(title, html, icon, confirmButtonText) {
-  Swal.fire({
-    title,
-    html,
-    icon,
-    confirmButtonText,
-  });
-}
-
-
-
+"use strict";
 (function () {
-  "use strict";
   window.addEventListener(
     "load",
     function () {
@@ -44,10 +23,6 @@ function notifyModal(title, html, icon, confirmButtonText) {
     false
   );
 })();
-
-
-
-
 
 function Prompt() {
   let toast = function (c) {
@@ -88,14 +63,16 @@ function Prompt() {
     });
   };
   async function custom(c) {
-    const { msg = "", title = "" } = c;
+    const { msg = "", title = "", icon = "", showConfirmButton = true } = c;
 
     const { value: result } = await Swal.fire({
+      icon,
       title,
       html: msg,
       focusConfirm: false,
       showCancelButton: true,
       backdrop: false,
+      showConfirmButton: showConfirmButton,
       willOpen: () => {
         if (c.willOpen !== undefined) {
           c.willOpen();
