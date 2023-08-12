@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // User is the user model
 type User struct {
@@ -37,7 +39,7 @@ type Reservation struct {
 	LastName  string
 	Email     string
 	Phone     string
-	StatDate  time.Time
+	StartDate time.Time
 	EndDate   time.Time
 	RoomID    int
 	CreatedAt time.Time
@@ -51,11 +53,19 @@ type RoomRestriction struct {
 	RoomID        int
 	ReservationID int
 	RestrictionID int
-	StatDate      time.Time
+	StartDate     time.Time
 	EndDate       time.Time
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	Room          Room
 	Reservation   Reservation
 	Restriction   Restriction
+}
+
+// MailData holds an email message
+type MailData struct {
+	To      string
+	From    string
+	Subject string
+	Content string
 }

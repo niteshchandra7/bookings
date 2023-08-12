@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -91,8 +92,8 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 	res.Room.RoomName = room.RoomName
 
 	layout := "2006-01-02"
-	sd := res.StatDate.Format(layout)
-	ed := res.StatDate.Format(layout)
+	sd := res.StartDate.Format(layout)
+	ed := res.StartDate.Format(layout)
 
 	m.App.Session.Put(r.Context(), "reservation", res)
 
@@ -153,7 +154,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	reservation.LastName = r.Form.Get("last_name")
 	reservation.Phone = r.Form.Get("phone")
 	reservation.Email = r.Form.Get("email")
-	reservation.StatDate = startDate
+	reservation.StartDate = startDate
 	reservation.EndDate = endDate
 	reservation.RoomID = roomID
 
@@ -193,7 +194,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	restriction := models.RoomRestriction{
-		StatDate:      reservation.StatDate,
+		StartDate:     reservation.StartDate,
 		EndDate:       reservation.EndDate,
 		RoomID:        reservation.RoomID,
 		ReservationID: newReservationID,
@@ -204,8 +205,23 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		m.App.Session.Put(r.Context(), "error", "can't insert room restriction")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
-
 	}
+
+	// send notification - first to guest
+
+	htmlMessage := fmt.Sprintf(`
+		<strong>Reservation Confirmation </strong><br>
+		Dear %s, <br>
+		This is to confirm your reservation from %s to %s
+	`, reservation.FirstName, reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"))
+
+	msg := models.MailData{
+		To:      reservation.Email,
+		From:    "me@here.com",
+		Subject: "Reservation Confirmation",
+		Content: htmlMessage,
+	}
+	m.App.MailChan <- msg
 
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
@@ -225,6 +241,11 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
 	layout := "2006-01-02"
@@ -254,8 +275,8 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	data["rooms"] = rooms
 
 	res := models.Reservation{
-		StatDate: startDate,
-		EndDate:  endDate,
+		StartDate: startDate,
+		EndDate:   endDate,
 	}
 
 	m.App.Session.Put(r.Context(), "reservation", res)
@@ -329,7 +350,7 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 	data := make(map[string]interface{})
 	data["reservation"] = reservation
 
-	sd := reservation.StatDate.Format("2006-01-02")
+	sd := reservation.StartDate.Format("2006-01-02")
 	ed := reservation.EndDate.Format("2006-01-02")
 	stringMap := make(map[string]string)
 	stringMap["start_date"] = sd
@@ -371,7 +392,7 @@ func (m *Repository) BookRoom(w http.ResponseWriter, r *http.Request) {
 
 	var res models.Reservation
 	res.RoomID = roomID
-	res.StatDate = sd
+	res.StartDate = sd
 	res.EndDate = ed
 
 	room, err := m.DB.GetRoomByID(roomID)

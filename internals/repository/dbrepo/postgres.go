@@ -21,7 +21,7 @@ func (m *postgresDBRepo) InsertReservation(res models.Reservation) (int, error) 
 		res.LastName,
 		res.Email,
 		res.Phone,
-		res.StatDate,
+		res.StartDate,
 		res.EndDate,
 		res.RoomID,
 		time.Now(),
@@ -41,7 +41,7 @@ func (m *postgresDBRepo) InsertRoomRestriction(r models.RoomRestriction) error {
 	stmt := `insert into room_restrictions (start_date, end_date, room_id, reservation_id,
 		created_at,updated_at,restriction_id) values ($1,$2,$3,$4,$5,$6,$7)`
 	_, err := m.DB.ExecContext(ctx, stmt,
-		r.StatDate,
+		r.StartDate,
 		r.EndDate,
 		r.RoomID,
 		r.ReservationID,

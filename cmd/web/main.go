@@ -32,6 +32,12 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.SQL.Close()
+	defer close(app.MailChan)
+
+	fmt.Println("Starting Mail Listener...")
+	listenForMail()
+
+	
 	// http.HandleFunc("/", handlers.Repo.Home)
 	// http.HandleFunc("/about", handlers.Repo.About)
 	fmt.Printf("Starting application of port %s\n", portNumber)
@@ -62,6 +68,9 @@ func run() (*drivers.DB, error) {
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
 	gob.Register(models.Restriction{})
+
+	mailChan := make(chan models.MailData)
+	app.MailChan = mailChan
 
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
