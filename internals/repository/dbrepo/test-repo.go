@@ -9,11 +9,18 @@ import (
 
 // InsertReservation inserts a reservation into the database
 func (m *testDBRepo) InsertReservation(res models.Reservation) (int, error) {
+	// the room id is 2, then fail; otherwise, pass
+	if res.RoomID == 2 {
+		return 0, errors.New("failed to insert reservation")
+	}
 	return 1, nil
 }
 
 // InsertRoomRestriction inserts a room restriction into the database
 func (m *testDBRepo) InsertRoomRestriction(r models.RoomRestriction) error {
+	if r.RoomID == 1000 {
+		return errors.New("invalid room id")
+	}
 	return nil
 }
 
