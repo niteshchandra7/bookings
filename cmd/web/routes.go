@@ -21,26 +21,29 @@ func routes(app *config.AppConfig) http.Handler {
 	//mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 	//mux.Use(WriteToConsole)
-	mux.Get("/", http.HandlerFunc(handlers.Repo.Home))
+	mux.Get("/", handlers.Repo.Home)
 
-	mux.Get("/about", http.HandlerFunc(handlers.Repo.About))
+	mux.Get("/about", handlers.Repo.About)
 
-	mux.Get("/contact", http.HandlerFunc(handlers.Repo.Contact))
+	mux.Get("/contact", handlers.Repo.Contact)
 
-	mux.Get("/make-reservation", http.HandlerFunc(handlers.Repo.Reservation))
-	mux.Post("/make-reservation", http.HandlerFunc(handlers.Repo.PostReservation))
+	mux.Get("/make-reservation", handlers.Repo.Reservation)
+	mux.Post("/make-reservation", handlers.Repo.PostReservation)
 
 	mux.Get("/choose-room/{id}", handlers.Repo.ChooseRoom)
 
-	mux.Get("/generals-quarters", http.HandlerFunc(handlers.Repo.Generals))
-	mux.Get("/majors-suite", http.HandlerFunc(handlers.Repo.Majors))
+	mux.Get("/generals-quarters", handlers.Repo.Generals)
+	mux.Get("/majors-suite", handlers.Repo.Majors)
 
-	mux.Get("/search-availability", http.HandlerFunc(handlers.Repo.Availability))
-	mux.Post("/search-availability", http.HandlerFunc(handlers.Repo.PostAvailability))
-	mux.Get("/reservation-summary", http.HandlerFunc(handlers.Repo.ReservationSummary))
+	mux.Get("/search-availability", handlers.Repo.Availability)
+	mux.Post("/search-availability", handlers.Repo.PostAvailability)
+	mux.Get("/reservation-summary", handlers.Repo.ReservationSummary)
 
-	mux.Get("/search-availability-json", http.HandlerFunc(handlers.Repo.AvailabilityJSON))
-	mux.Post("/search-availability-json", http.HandlerFunc(handlers.Repo.AvailabilityJSON))
+	mux.Get("/search-availability-json", handlers.Repo.AvailabilityJSON)
+	mux.Post("/search-availability-json", handlers.Repo.AvailabilityJSON)
+
+	mux.Get("/user/login", handlers.Repo.ShowLogin)
+	mux.Post("/user/login", handlers.Repo.PostShowLogin)
 
 	mux.Get("/book-room", handlers.Repo.BookRoom)
 
