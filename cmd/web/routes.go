@@ -20,6 +20,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Use(middleware.Recoverer)
 	//mux.Use(NoSurf)
 	mux.Use(SessionLoad)
+	//mux.Use(Auth)
 	//mux.Use(WriteToConsole)
 	mux.Get("/", handlers.Repo.Home)
 
@@ -44,6 +45,7 @@ func routes(app *config.AppConfig) http.Handler {
 
 	mux.Get("/user/login", handlers.Repo.ShowLogin)
 	mux.Post("/user/login", handlers.Repo.PostShowLogin)
+	mux.Get("/user/logout", handlers.Repo.ShowLogout)
 
 	mux.Get("/book-room", handlers.Repo.BookRoom)
 
